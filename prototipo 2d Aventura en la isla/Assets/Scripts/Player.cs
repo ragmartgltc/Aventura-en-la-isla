@@ -22,6 +22,12 @@ private Animator animator;
 private int coins;
 public TMP_Text textCoins;
 
+public AudioSource audioSource;
+public AudioClip coinClip;
+public AudioClip barrelClip;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,14 +60,38 @@ public TMP_Text textCoins;
     {
         if (collision.transform.CompareTag("Coin"))
         {
+            audioSource.PlayOneShot(coinClip);
             Destroy(collision.gameObject);
             coins++;
             textCoins.text = coins.ToString();
         }
+
         if (collision.transform.CompareTag("Spikes"))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            
         }
+
+         if (collision.transform.CompareTag("Barrel"))
+        {
+            audioSource.PlayOneShot(barrelClip);
+            Vector2 knockbackDir = (rb2D.position - (Vector2)collision.transform.position).normalized;
+            rb2D.linearVelocity = Vector2.zero;
+            rb2D.AddForce(knockbackDir * 3, ForceMode2D.Impulse);
+            
+            BoxCollider2D[] colliders = collision.gameObject.GetComponents<BoxCollider2D>();
+           
+            foreach (BoxCollider2D col in colliders)
+    {
+        col.enabled = false;
+    }
+
+            collision.GetComponent<Animator>().enabled=true;
+            Destroy(collision.gameObject, 0.5f);
+        }
+        
+       
+
+
+
     }
 }
