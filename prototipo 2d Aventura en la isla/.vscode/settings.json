@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Aventura-en-la-isla.slnx"
+    "dotnet.defaultSolution": "prototipo 2d Aventura en la isla.slnx"
 }
