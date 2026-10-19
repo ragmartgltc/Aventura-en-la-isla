@@ -4129,7 +4129,7 @@ GameObject:
   - component: {fileID: 1288199707}
   - component: {fileID: 1288199706}
   m_Layer: 0
-  m_Name: Square
+  m_Name: fin de juego al caer
   m_TagString: Spikes
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4249,8 +4249,8 @@ Transform:
   m_GameObject: {fileID: 1288199705}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: -1.62, z: 0}
-  m_LocalScale: {x: 9.89, y: 0.33, z: 1}
+  m_LocalPosition: {x: 7.3271, y: -1.5349, z: 0}
+  m_LocalScale: {x: 24.724012, y: 0.50021404, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
