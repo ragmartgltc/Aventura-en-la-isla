@@ -1,0 +1,4 @@
+repository "prototipo 2d Aventura en la isla 2026-10-17_15-39-51/prototipo 2d Aventura en la isla@4673962204829@cloud"
+  path "/"
+    br "/main"
+    co "/main"

@@ -68,7 +68,7 @@ public AudioClip barrelClip;
 
         if (collision.transform.CompareTag("Spikes"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            GetComponent<PlayerHealth>().RecibirDano();
         }
 
          if (collision.transform.CompareTag("Barrel"))
