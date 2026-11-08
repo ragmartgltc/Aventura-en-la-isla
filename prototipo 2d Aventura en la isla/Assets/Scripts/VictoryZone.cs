@@ -22,6 +22,10 @@ public class VictoryZone : MonoBehaviour
 
     [Header("Escenas")]
     [SerializeField] private string mainMenuScene = "MainMenu";
+    [Tooltip("Escena del siguiente nivel. DEJAR VACIO en el ultimo nivel para mostrar la pantalla de victoria.")]
+    [SerializeField] private string nextSceneName = "";
+    [Tooltip("Segundos de espera antes de cambiar de nivel (para que suene el sonido).")]
+    [SerializeField] private float delayBeforeNextLevel = 1f;
 
     [Header("Audio (opcional)")]
     [SerializeField] private AudioClip victorySound;
@@ -68,11 +72,19 @@ public class VictoryZone : MonoBehaviour
     {
         hasWon = true;
 
-        if (resultText != null)
-            resultText.text = "Monedas: " + collected + " / " + totalCoins;
-
         if (victorySound != null)
             AudioSource.PlayClipAtPoint(victorySound, Camera.main != null ? Camera.main.transform.position : transform.position);
+
+        // Si hay siguiente nivel, pasa a el en vez de mostrar la victoria
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            Invoke(nameof(LoadNextLevel), delayBeforeNextLevel);
+            return;
+        }
+
+        // Ultimo nivel: pantalla de victoria final
+        if (resultText != null)
+            resultText.text = "Monedas: " + collected + " / " + totalCoins;
 
         // Evita que se pueda pausar mientras se muestra la victoria
         var pause = FindFirstObjectByType<PauseMenuManager>();
@@ -80,6 +92,12 @@ public class VictoryZone : MonoBehaviour
 
         if (victoryPanel != null) victoryPanel.SetActive(true);
         Time.timeScale = 0f; // congela el juego
+    }
+
+    private void LoadNextLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(nextSceneName);
     }
 
     private void ShowHint(string message)
