@@ -4979,7 +4979,7 @@ MonoBehaviour:
   playerTag: Player
   mainMenuScene: MainMenu
   nextSceneName: Nivel2
-  delayBeforeNextLevel: 3
+  delayBeforeNextLevel: 0
   victorySound: {fileID: 0}
 --- !u!61 &772889216
 BoxCollider2D:
