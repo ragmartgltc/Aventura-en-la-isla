@@ -4,15 +4,20 @@ using TMPro;
 
 /// <summary>
 /// Se pone en el objeto "Meta" (puerta del templo). Debe tener un Collider2D con Is Trigger activado.
-/// Cuando el Player lo toca (y cumple el requisito de monedas) muestra la pantalla de victoria.
+/// Cuando el Player lo toca (y cumple el requisito de monedas) muestra la imagen de nivel completado
+/// o juego terminado mediante AvisoNivelCompletado.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class VictoryZone : MonoBehaviour
 {
     [Header("UI (arrastrar desde la jerarquia)")]
-    [SerializeField] private GameObject victoryPanel;     // Panel de victoria (empieza oculto)
+    [SerializeField] private GameObject victoryPanel;     // Panel de victoria de respaldo (empieza oculto)
     [SerializeField] private TMP_Text resultText;         // Opcional: "Monedas: 8/8"
     [SerializeField] private TMP_Text hintText;           // Opcional: mensaje si aun faltan monedas
+
+    [Header("Aviso de Nivel Completado (opcional)")]
+    [Tooltip("Puedes arrastrar ControlCompletado aqui, o dejarlo vacio para que se busque solo en la escena.")]
+    [SerializeField] private AvisoNivelCompletado avisoCompletado;
 
     [Header("Reglas de la meta")]
     [Tooltip("Monedas necesarias para abrir la meta. 0 = no se exige ninguna.")]
@@ -20,11 +25,11 @@ public class VictoryZone : MonoBehaviour
     [SerializeField] private string coinTag = "Coin";
     [SerializeField] private string playerTag = "Player";
 
-    [Header("Escenas")]
+    [Header("Escenas (respaldo si no hay ControlCompletado)")]
     [SerializeField] private string mainMenuScene = "MainMenu";
-    [Tooltip("Escena del siguiente nivel. DEJAR VACIO en el ultimo nivel para mostrar la pantalla de victoria.")]
+    [Tooltip("Escena del siguiente nivel. DEJAR VACIO en el ultimo nivel.")]
     [SerializeField] private string nextSceneName = "";
-    [Tooltip("Segundos de espera antes de cambiar de nivel (para que suene el sonido).")]
+    [Tooltip("Segundos de espera antes de cambiar de nivel (solo si no existe AvisoNivelCompletado).")]
     [SerializeField] private float delayBeforeNextLevel = 1f;
 
     [Header("Audio (opcional)")]
@@ -72,26 +77,42 @@ public class VictoryZone : MonoBehaviour
     {
         hasWon = true;
 
+        if (hintText != null)
+            hintText.gameObject.SetActive(false);
+
         if (victorySound != null)
             AudioSource.PlayClipAtPoint(victorySound, Camera.main != null ? Camera.main.transform.position : transform.position);
 
-        // Si hay siguiente nivel, pasa a el en vez de mostrar la victoria
+        // Evita que se pueda pausar mientras se muestra la pantalla de completado
+        var pause = FindFirstObjectByType<PauseMenuManager>();
+        if (pause != null) pause.enabled = false;
+
+        // Busca ControlCompletado si no se arrastro manualmente en el Inspector
+        if (avisoCompletado == null)
+            avisoCompletado = FindFirstObjectByType<AvisoNivelCompletado>();
+
+        // Flujo principal: muestra la imagen de nivel completado / juego terminado y luego cambia de escena
+        if (avisoCompletado != null)
+        {
+            Time.timeScale = 0f; // Congela al jugador mientras se ve la imagen (WaitForSecondsRealtime sigue corriendo)
+            avisoCompletado.MostrarCompletado();
+            return;
+        }
+
+        Debug.LogWarning("No se encontro AvisoNivelCompletado en esta escena. Se usara el respaldo de VictoryZone.");
+
+        // Respaldo por si en alguna escena falta ControlCompletado
         if (!string.IsNullOrEmpty(nextSceneName))
         {
             Invoke(nameof(LoadNextLevel), delayBeforeNextLevel);
             return;
         }
 
-        // Ultimo nivel: pantalla de victoria final
         if (resultText != null)
             resultText.text = "Monedas: " + collected + " / " + totalCoins;
 
-        // Evita que se pueda pausar mientras se muestra la victoria
-        var pause = FindFirstObjectByType<PauseMenuManager>();
-        if (pause != null) pause.enabled = false;
-
         if (victoryPanel != null) victoryPanel.SetActive(true);
-        Time.timeScale = 0f; // congela el juego
+        Time.timeScale = 0f;
     }
 
     private void LoadNextLevel()
