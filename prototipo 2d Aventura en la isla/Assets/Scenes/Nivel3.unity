@@ -2755,14 +2755,14 @@ RectTransform:
   m_GameObject: {fileID: 487285679}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71999997, y: 0.71999997, z: 0.71999997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1966267379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 349.92, y: 226.18}
+  m_AnchoredPosition: {x: 38.888885, y: 91.52779}
   m_SizeDelta: {x: 347.5995, y: 86.8999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &496547723
@@ -4625,8 +4625,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4589e7da0fe1ab48aa0440f3495a51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AvisoInicioNivel
-  textoAviso: {fileID: 0}
-  monedasNecesarias: 5
+  textoAviso: {fileID: 487285680}
+  monedasNecesarias: 9
   duracionSegundos: 5
 --- !u!4 &946733552
 Transform:
@@ -8390,6 +8390,7 @@ RectTransform:
   - {fileID: 518305640}
   - {fileID: 1167453171}
   - {fileID: 646990168}
+  - {fileID: 487285682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -8990,7 +8991,6 @@ SceneRoots:
   - {fileID: 1966267379}
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 487285682}
   - {fileID: 1785420865614946786}
   - {fileID: 496547725}
   - {fileID: 8822879248836969259}
